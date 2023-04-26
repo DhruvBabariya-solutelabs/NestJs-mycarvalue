@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule , ConfigService} from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
@@ -8,15 +9,26 @@ import { User } from './users/user.entity';
 import { Report } from './reports/report.entity';
 
 @Module({
-  imports: [TypeOrmModule.forRoot({
-    type: 'postgres',
-    host: 'localhost',
-    port: 5432,
-    username: 'postgres',
-    password: 'root',
-    database: 'mycarvalue',
-    entities: [User,Report],
-    synchronize: true,
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath : `.env.${process.env.NODE_ENV}`
+    }), 
+    TypeOrmModule.forRootAsync({
+      inject :[ConfigService],
+      useFactory: (config: ConfigService)=>{
+        return {
+          type: 'postgres',
+          host: config.get<string>('DB_HOST'),
+          port: config.get<number>('DB_PORT'),
+          password: config.get<string>('DB_PASSWORD'),
+          database: config.get<string>('DB_NAME'),
+          username: config.get<string>('DB_USERNAME'),
+          entities: [User,Report],
+          synchronize: true,
+        }
+      }
+      
   }),UsersModule, ReportsModule],
   controllers: [AppController],
   providers: [AppService],

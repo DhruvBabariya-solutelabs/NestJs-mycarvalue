@@ -6,11 +6,26 @@ Content-type: application/json
     "password" : "dhruv@123"
 }
 
+### User Login
+POST http://localhost:3000/auth/signin
+Content-type: application/json
+
+{
+    "email" : "dhruv123@gmail.com",
+    "password" : "dhruv@123"
+}
+
+### whoAmI 
+Get http://localhost:3000/auth/whoami
+
+### sign out 
+POST  http://localhost:3000/auth/signout
+
 ###find particular user for given id
 GET http://localhost:3000/auth/2
 
 ###find all user with given email
-GET  http://localhost:3000/auth?email=dhruv123@gmail.com
+GET  http://localhost:3000/auth?email=dhruv567@gmail.com
 
 ###delete user with given id
 DELETE http://localhost:3000/auth/1
