@@ -1,22 +1,23 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule , ConfigService} from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { ReportsModule } from './reports/reports.module';
 import { User } from './users/user.entity';
 import { Report } from './reports/report.entity';
+const cookieSession = require('cookie-session');
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath : `.env.${process.env.NODE_ENV}`
-    }), 
+      envFilePath: `.env.${process.env.NODE_ENV}`,
+    }),
     TypeOrmModule.forRootAsync({
-      inject :[ConfigService],
-      useFactory: (config: ConfigService)=>{
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => {
         return {
           type: 'postgres',
           host: config.get<string>('DB_HOST'),
@@ -24,13 +25,25 @@ import { Report } from './reports/report.entity';
           password: config.get<string>('DB_PASSWORD'),
           database: config.get<string>('DB_NAME'),
           username: config.get<string>('DB_USERNAME'),
-          entities: [User,Report],
+          entities: [User, Report],
           synchronize: true,
-        }
-      }
-      
-  }),UsersModule, ReportsModule],
+        };
+      },
+    }),
+    UsersModule,
+    ReportsModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(
+        cookieSession({
+          keys: ['sgfhsghhd'],
+        }),
+      )
+      .forRoutes('*');
+  }
+}

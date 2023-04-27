@@ -2,8 +2,8 @@ POST  http://localhost:3000/auth/signup
 Content-type: application/json
 
 {
-    "email" : "dhruv123@gmail.com",
-    "password" : "dhruv@123"
+    "email" : "dhruv456@gmail.com",
+    "password" : "dhruv@456"
 }
 
 ### User Login
@@ -11,8 +11,8 @@ POST http://localhost:3000/auth/signin
 Content-type: application/json
 
 {
-    "email" : "dhruv123@gmail.com",
-    "password" : "dhruv@123"
+    "email" : "dhruv456@gmail.com",
+    "password" : "dhruv@456"
 }
 
 ### whoAmI 

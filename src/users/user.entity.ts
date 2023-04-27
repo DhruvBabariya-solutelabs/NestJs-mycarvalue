@@ -1,43 +1,43 @@
 import { Report } from 'src/reports/report.entity';
 import {
-    AfterInsert,
-    AfterUpdate, 
-    AfterRemove, 
-    Entity, 
-    Column, 
-    PrimaryGeneratedColumn,
-    OneToMany 
-} from 'typeorm'
+  AfterInsert,
+  AfterUpdate,
+  AfterRemove,
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+} from 'typeorm';
 
 @Entity()
-export class User{
+export class User {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @PrimaryGeneratedColumn()
-    id: number;
+  @Column()
+  email: string;
 
-    @Column()
-    email : string;
+  @Column()
+  password: string;
 
-    @Column()
-    password : string;
+  @Column({ default: true })
+  admin: boolean;
 
-    @OneToMany(()=> Report,(report)=> report.user)
-    reports: Report[];
+  @OneToMany(() => Report, (report) => report.user)
+  reports: Report[];
 
-    @AfterInsert()
-    insertLog(){
-        console.log("Insert User Successful id = "+this.id);
-    }
+  @AfterInsert()
+  insertLog() {
+    console.log('Insert User Successful id = ' + this.id);
+  }
 
-    @AfterUpdate()
-    updateLog(){
-        console.log("Update User Successful id = "+this.id);
-    }
+  @AfterUpdate()
+  updateLog() {
+    console.log('Update User Successful id = ' + this.id);
+  }
 
-    @AfterRemove()
-    removeLog(){
-        console.log("Remove User Successful id = "+this.id);
-        
-    }
-    
+  @AfterRemove()
+  removeLog() {
+    console.log('Remove User Successful id = ' + this.id);
+  }
 }
