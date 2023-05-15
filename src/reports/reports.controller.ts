@@ -18,8 +18,10 @@ import { ReportDto } from './dtos/report.dto';
 import { ApproveReportDto } from './dtos/approve-report.dto';
 import { AdminGuard } from 'src/guards/admin.guard';
 import { GetEstimateDto } from './dtos/get-estimate.dto';
-import { query } from 'express';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { Report } from './report.entity';
 
+@ApiTags('Reports')
 @Controller('reports')
 export class ReportsController {
   constructor(private reportsService: ReportsService) {}
@@ -36,6 +38,7 @@ export class ReportsController {
     return this.reportsService.create(body, user);
   }
 
+  @ApiOkResponse({ type: Report, description: 'It is Reports' })
   @Patch('/:id')
   @UseGuards(AdminGuard)
   approvedReport(@Param('id') id: string, @Body() body: ApproveReportDto) {
